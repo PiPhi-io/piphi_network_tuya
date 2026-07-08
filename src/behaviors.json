@@ -1,0 +1,622 @@
+{
+  "devices": [
+    {
+      "id": "tuya_plug",
+      "name": "Tuya plug",
+      "description": "Local Tuya smart plug or outlet controlled over the LAN with TinyTuya.",
+      "deviceClass": "outlet",
+      "entityType": "switch",
+      "capabilities": [
+        "connected",
+        "power",
+        "current_ma",
+        "power_w",
+        "voltage_v",
+        "refresh",
+        "turn_on",
+        "turn_off",
+        "set_dp"
+      ],
+      "conditions": [
+        {
+          "id": "connected",
+          "label": "Plug is connected",
+          "type": "boolean",
+          "capability": "sensor.connected",
+          "operators": [
+            "eq",
+            "neq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "connected",
+            "operator": "eq"
+          }
+        },
+        {
+          "id": "power_above",
+          "label": "Power draw",
+          "type": "number",
+          "params": [
+            {
+              "name": "watts",
+              "label": "Watts",
+              "type": "number",
+              "required": true,
+              "unit": "W"
+            }
+          ],
+          "capability": "sensor.power_w",
+          "operators": [
+            ">",
+            ">=",
+            "<",
+            "<=",
+            "eq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "power_w",
+            "operator": ">"
+          }
+        }
+      ],
+      "actions": [
+        {
+          "id": "turn_on",
+          "label": "Turn on",
+          "command": "turn_on"
+        },
+        {
+          "id": "turn_off",
+          "label": "Turn off",
+          "command": "turn_off"
+        },
+        {
+          "id": "refresh",
+          "label": "Refresh",
+          "command": "refresh"
+        }
+      ]
+    },
+    {
+      "id": "tuya_light",
+      "name": "Tuya light",
+      "description": "Local Tuya bulb or light strip with brightness, color temperature, and RGB controls.",
+      "deviceClass": "light",
+      "entityType": "light",
+      "capabilities": [
+        "connected",
+        "power",
+        "mode",
+        "brightness_percent",
+        "color_temp_percent",
+        "color_value",
+        "refresh",
+        "turn_on",
+        "turn_off",
+        "set_brightness",
+        "set_color_temp",
+        "set_color_rgb",
+        "set_mode"
+      ],
+      "conditions": [
+        {
+          "id": "brightness_above",
+          "label": "Brightness",
+          "type": "number",
+          "params": [
+            {
+              "name": "percent",
+              "label": "Brightness %",
+              "type": "number",
+              "required": true,
+              "unit": "%"
+            }
+          ],
+          "capability": "sensor.brightness_percent",
+          "operators": [
+            ">",
+            ">=",
+            "<",
+            "<=",
+            "eq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "brightness_percent",
+            "operator": ">"
+          }
+        },
+        {
+          "id": "mode_equals",
+          "label": "Light mode",
+          "type": "text",
+          "params": [
+            {
+              "name": "mode",
+              "label": "Mode",
+              "type": "text",
+              "required": true
+            }
+          ],
+          "capability": "sensor.mode",
+          "operators": [
+            "eq",
+            "neq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "mode",
+            "operator": "eq"
+          }
+        }
+      ],
+      "actions": [
+        {
+          "id": "turn_on",
+          "label": "Turn on",
+          "command": "turn_on"
+        },
+        {
+          "id": "turn_off",
+          "label": "Turn off",
+          "command": "turn_off"
+        },
+        {
+          "id": "set_brightness",
+          "label": "Set brightness",
+          "command": "set_brightness"
+        },
+        {
+          "id": "set_color_temp",
+          "label": "Set color temperature",
+          "command": "set_color_temp"
+        },
+        {
+          "id": "set_color_rgb",
+          "label": "Set RGB color",
+          "command": "set_color_rgb"
+        }
+      ]
+    },
+    {
+      "id": "tuya_fan",
+      "name": "Tuya fan",
+      "description": "Local Tuya fan with power, speed, oscillation, and optional mode controls.",
+      "deviceClass": "fan",
+      "entityType": "fan",
+      "capabilities": [
+        "connected",
+        "power",
+        "fan_speed_percent",
+        "oscillating",
+        "mode",
+        "refresh",
+        "turn_on",
+        "turn_off",
+        "set_fan_speed",
+        "set_oscillate",
+        "set_mode",
+        "set_dp"
+      ],
+      "conditions": [
+        {
+          "id": "speed_above",
+          "label": "Fan speed",
+          "type": "number",
+          "params": [
+            {
+              "name": "percent",
+              "label": "Speed %",
+              "type": "number",
+              "required": true,
+              "unit": "%"
+            }
+          ],
+          "capability": "sensor.fan_speed_percent",
+          "operators": [
+            ">",
+            ">=",
+            "<",
+            "<=",
+            "eq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "fan_speed_percent",
+            "operator": ">"
+          }
+        }
+      ],
+      "actions": [
+        {
+          "id": "turn_on",
+          "label": "Turn on",
+          "command": "turn_on"
+        },
+        {
+          "id": "turn_off",
+          "label": "Turn off",
+          "command": "turn_off"
+        },
+        {
+          "id": "set_fan_speed",
+          "label": "Set fan speed",
+          "command": "set_fan_speed"
+        },
+        {
+          "id": "set_oscillate",
+          "label": "Set oscillation",
+          "command": "set_oscillate"
+        }
+      ]
+    },
+    {
+      "id": "tuya_cover",
+      "name": "Tuya cover",
+      "description": "Local Tuya curtain, blind, or shade with open, close, stop, and optional position controls.",
+      "deviceClass": "cover",
+      "entityType": "cover",
+      "capabilities": [
+        "connected",
+        "position_percent",
+        "motion_state",
+        "refresh",
+        "open_cover",
+        "close_cover",
+        "stop_cover",
+        "set_cover_position",
+        "set_dp"
+      ],
+      "conditions": [
+        {
+          "id": "position_above",
+          "label": "Cover position",
+          "type": "number",
+          "params": [
+            {
+              "name": "percent",
+              "label": "Position %",
+              "type": "number",
+              "required": true,
+              "unit": "%"
+            }
+          ],
+          "capability": "sensor.position_percent",
+          "operators": [
+            ">",
+            ">=",
+            "<",
+            "<=",
+            "eq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "position_percent",
+            "operator": ">"
+          }
+        }
+      ],
+      "actions": [
+        {
+          "id": "open_cover",
+          "label": "Open",
+          "command": "open_cover"
+        },
+        {
+          "id": "close_cover",
+          "label": "Close",
+          "command": "close_cover"
+        },
+        {
+          "id": "stop_cover",
+          "label": "Stop",
+          "command": "stop_cover"
+        },
+        {
+          "id": "set_cover_position",
+          "label": "Set position",
+          "command": "set_cover_position"
+        }
+      ]
+    },
+    {
+      "id": "tuya_climate",
+      "name": "Tuya climate",
+      "description": "Local Tuya thermostat or climate device with target temperature, current temperature, power, and optional mode controls.",
+      "deviceClass": "climate",
+      "entityType": "climate",
+      "capabilities": [
+        "connected",
+        "power",
+        "mode",
+        "temperature_c",
+        "target_temperature_c",
+        "refresh",
+        "turn_on",
+        "turn_off",
+        "set_temperature",
+        "set_mode",
+        "set_dp"
+      ],
+      "conditions": [
+        {
+          "id": "current_temp_above",
+          "label": "Current temperature",
+          "type": "number",
+          "params": [
+            {
+              "name": "temperature_c",
+              "label": "Temperature \u00b0C",
+              "type": "number",
+              "required": true,
+              "unit": "C"
+            }
+          ],
+          "capability": "sensor.temperature_c",
+          "operators": [
+            ">",
+            ">=",
+            "<",
+            "<=",
+            "eq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "temperature_c",
+            "operator": ">"
+          }
+        },
+        {
+          "id": "mode_equals",
+          "label": "Climate mode",
+          "type": "text",
+          "params": [
+            {
+              "name": "mode",
+              "label": "Mode",
+              "type": "text",
+              "required": true
+            }
+          ],
+          "capability": "sensor.mode",
+          "operators": [
+            "eq",
+            "neq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "mode",
+            "operator": "eq"
+          }
+        }
+      ],
+      "actions": [
+        {
+          "id": "turn_on",
+          "label": "Turn on",
+          "command": "turn_on"
+        },
+        {
+          "id": "turn_off",
+          "label": "Turn off",
+          "command": "turn_off"
+        },
+        {
+          "id": "set_temperature",
+          "label": "Set temperature",
+          "command": "set_temperature"
+        },
+        {
+          "id": "set_mode",
+          "label": "Set mode",
+          "command": "set_mode"
+        },
+        {
+          "id": "refresh",
+          "label": "Refresh",
+          "command": "refresh"
+        }
+      ]
+    },
+    {
+      "id": "tuya_humidifier",
+      "name": "Tuya humidifier",
+      "description": "Local Tuya humidifier or diffuser with target humidity, current humidity, power, and optional mode controls.",
+      "deviceClass": "humidifier",
+      "entityType": "humidifier",
+      "capabilities": [
+        "connected",
+        "power",
+        "mode",
+        "humidity_percent",
+        "target_humidity_percent",
+        "refresh",
+        "turn_on",
+        "turn_off",
+        "set_humidity",
+        "set_mode",
+        "set_dp"
+      ],
+      "conditions": [
+        {
+          "id": "current_humidity_above",
+          "label": "Current humidity",
+          "type": "number",
+          "params": [
+            {
+              "name": "humidity_percent",
+              "label": "Humidity %",
+              "type": "number",
+              "required": true,
+              "unit": "%"
+            }
+          ],
+          "capability": "sensor.humidity_percent",
+          "operators": [
+            ">",
+            ">=",
+            "<",
+            "<=",
+            "eq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "humidity_percent",
+            "operator": ">"
+          }
+        },
+        {
+          "id": "mode_equals",
+          "label": "Humidifier mode",
+          "type": "text",
+          "params": [
+            {
+              "name": "mode",
+              "label": "Mode",
+              "type": "text",
+              "required": true
+            }
+          ],
+          "capability": "sensor.mode",
+          "operators": [
+            "eq",
+            "neq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "mode",
+            "operator": "eq"
+          }
+        }
+      ],
+      "actions": [
+        {
+          "id": "turn_on",
+          "label": "Turn on",
+          "command": "turn_on"
+        },
+        {
+          "id": "turn_off",
+          "label": "Turn off",
+          "command": "turn_off"
+        },
+        {
+          "id": "set_humidity",
+          "label": "Set humidity",
+          "command": "set_humidity"
+        },
+        {
+          "id": "set_mode",
+          "label": "Set mode",
+          "command": "set_mode"
+        },
+        {
+          "id": "refresh",
+          "label": "Refresh",
+          "command": "refresh"
+        }
+      ]
+    },
+    {
+      "id": "tuya_air_purifier",
+      "name": "Tuya air purifier",
+      "description": "Local Tuya air purifier with power, optional speed and mode controls, and optional air quality readings.",
+      "deviceClass": "air_purifier",
+      "entityType": "air_purifier",
+      "capabilities": [
+        "connected",
+        "power",
+        "mode",
+        "fan_speed_percent",
+        "air_quality_index",
+        "refresh",
+        "turn_on",
+        "turn_off",
+        "set_fan_speed",
+        "set_mode",
+        "set_dp"
+      ],
+      "conditions": [
+        {
+          "id": "air_quality_above",
+          "label": "Air quality index",
+          "type": "number",
+          "params": [
+            {
+              "name": "aqi",
+              "label": "AQI",
+              "type": "number",
+              "required": true,
+              "unit": "AQI"
+            }
+          ],
+          "capability": "sensor.air_quality_index",
+          "operators": [
+            ">",
+            ">=",
+            "<",
+            "<=",
+            "eq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "air_quality_index",
+            "operator": ">"
+          }
+        },
+        {
+          "id": "mode_equals",
+          "label": "Purifier mode",
+          "type": "text",
+          "params": [
+            {
+              "name": "mode",
+              "label": "Mode",
+              "type": "text",
+              "required": true
+            }
+          ],
+          "capability": "sensor.mode",
+          "operators": [
+            "eq",
+            "neq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "mode",
+            "operator": "eq"
+          }
+        }
+      ],
+      "actions": [
+        {
+          "id": "turn_on",
+          "label": "Turn on",
+          "command": "turn_on"
+        },
+        {
+          "id": "turn_off",
+          "label": "Turn off",
+          "command": "turn_off"
+        },
+        {
+          "id": "set_fan_speed",
+          "label": "Set speed",
+          "command": "set_fan_speed"
+        },
+        {
+          "id": "set_mode",
+          "label": "Set mode",
+          "command": "set_mode"
+        },
+        {
+          "id": "refresh",
+          "label": "Refresh",
+          "command": "refresh"
+        }
+      ]
+    }
+  ]
+}
