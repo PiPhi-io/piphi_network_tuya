@@ -426,6 +426,39 @@ def test_behaviors_route_reports_plug_light_fan_cover_climate_humidifier_and_air
         "tuya_air_purifier",
     }.issubset(ids)
 
+    by_id = {device["id"]: device for device in body["devices"]}
+    light_action_ids = {action["id"] for action in by_id["tuya_light"]["actions"]}
+    fan_action_ids = {action["id"] for action in by_id["tuya_fan"]["actions"]}
+    cover_action_ids = {action["id"] for action in by_id["tuya_cover"]["actions"]}
+    purifier_condition_ids = {
+        condition["id"] for condition in by_id["tuya_air_purifier"]["conditions"]
+    }
+    climate_condition_ids = {
+        condition["id"] for condition in by_id["tuya_climate"]["conditions"]
+    }
+    standardized_condition_order = {
+        device_id: [condition["id"] for condition in by_id[device_id]["conditions"][:2]]
+        for device_id in [
+            "tuya_plug",
+            "tuya_light",
+            "tuya_fan",
+            "tuya_climate",
+            "tuya_humidifier",
+            "tuya_air_purifier",
+        ]
+    }
+
+    assert {"set_mode", "refresh"}.issubset(light_action_ids)
+    assert {"set_mode", "refresh"}.issubset(fan_action_ids)
+    assert "refresh" in cover_action_ids
+    assert {"fan_speed", "power_state", "connected"}.issubset(purifier_condition_ids)
+    assert {"target_temperature", "power_state", "connected"}.issubset(
+        climate_condition_ids
+    )
+    for condition_ids in standardized_condition_order.values():
+        assert condition_ids == ["connected", "power_state"]
+    assert by_id["tuya_cover"]["conditions"][0]["id"] == "connected"
+
 
 def test_behaviors_static_route_matches_checked_in_file() -> None:
     behaviors_path = Path(__file__).resolve().parents[1] / "src" / "behaviors.json"

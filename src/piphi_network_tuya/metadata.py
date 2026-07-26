@@ -25,6 +25,36 @@ from .settings import (
 )
 
 
+def _connected_condition(label_prefix: str) -> dict[str, Any]:
+    return {
+        "id": "connected",
+        "label": f"{label_prefix} is connected",
+        "type": "boolean",
+        "capability": "sensor.connected",
+        "operators": ["eq", "neq"],
+        "runtime": {
+            "source": "state",
+            "field": "connected",
+            "operator": "eq",
+        },
+    }
+
+
+def _power_state_condition(label_prefix: str) -> dict[str, Any]:
+    return {
+        "id": "power_state",
+        "label": f"{label_prefix} power state",
+        "type": "boolean",
+        "capability": "sensor.power",
+        "operators": ["eq", "neq"],
+        "runtime": {
+            "source": "state",
+            "field": "power",
+            "operator": "eq",
+        },
+    }
+
+
 def build_manifest() -> dict[str, Any]:
     return {
         "$schema": "./schema/piphi-manifest.schema.json",
@@ -235,20 +265,10 @@ def build_behaviors() -> dict[str, Any]:
                     "set_dp",
                 ],
                 "conditions": [
+                    _connected_condition("Plug"),
+                    _power_state_condition("Plug"),
                     {
-                        "id": "connected",
-                        "label": "Plug is connected",
-                        "type": "boolean",
-                        "capability": "sensor.connected",
-                        "operators": ["eq", "neq"],
-                        "runtime": {
-                            "source": "state",
-                            "field": "connected",
-                            "operator": "eq",
-                        },
-                    },
-                    {
-                        "id": "power_above",
+                        "id": "power_draw",
                         "label": "Power draw",
                         "type": "number",
                         "params": [
@@ -297,8 +317,10 @@ def build_behaviors() -> dict[str, Any]:
                     "set_mode",
                 ],
                 "conditions": [
+                    _connected_condition("Light"),
+                    _power_state_condition("Light"),
                     {
-                        "id": "brightness_above",
+                        "id": "brightness",
                         "label": "Brightness",
                         "type": "number",
                         "params": [
@@ -357,6 +379,12 @@ def build_behaviors() -> dict[str, Any]:
                         "label": "Set RGB color",
                         "command": "set_color_rgb",
                     },
+                    {
+                        "id": "set_mode",
+                        "label": "Set mode",
+                        "command": "set_mode",
+                    },
+                    {"id": "refresh", "label": "Refresh", "command": "refresh"},
                 ],
             },
             {
@@ -380,8 +408,10 @@ def build_behaviors() -> dict[str, Any]:
                     "set_dp",
                 ],
                 "conditions": [
+                    _connected_condition("Fan"),
+                    _power_state_condition("Fan"),
                     {
-                        "id": "speed_above",
+                        "id": "fan_speed",
                         "label": "Fan speed",
                         "type": "number",
                         "params": [
@@ -400,7 +430,39 @@ def build_behaviors() -> dict[str, Any]:
                             "field": "fan_speed_percent",
                             "operator": ">",
                         },
-                    }
+                    },
+                    {
+                        "id": "oscillating",
+                        "label": "Fan is oscillating",
+                        "type": "boolean",
+                        "capability": "sensor.oscillating",
+                        "operators": ["eq", "neq"],
+                        "runtime": {
+                            "source": "state",
+                            "field": "oscillating",
+                            "operator": "eq",
+                        },
+                    },
+                    {
+                        "id": "mode_equals",
+                        "label": "Fan mode",
+                        "type": "text",
+                        "params": [
+                            {
+                                "name": "mode",
+                                "label": "Mode",
+                                "type": "text",
+                                "required": True,
+                            }
+                        ],
+                        "capability": "sensor.mode",
+                        "operators": ["eq", "neq"],
+                        "runtime": {
+                            "source": "state",
+                            "field": "mode",
+                            "operator": "eq",
+                        },
+                    },
                 ],
                 "actions": [
                     {"id": "turn_on", "label": "Turn on", "command": "turn_on"},
@@ -415,6 +477,12 @@ def build_behaviors() -> dict[str, Any]:
                         "label": "Set oscillation",
                         "command": "set_oscillate",
                     },
+                    {
+                        "id": "set_mode",
+                        "label": "Set mode",
+                        "command": "set_mode",
+                    },
+                    {"id": "refresh", "label": "Refresh", "command": "refresh"},
                 ],
             },
             {
@@ -435,8 +503,9 @@ def build_behaviors() -> dict[str, Any]:
                     "set_dp",
                 ],
                 "conditions": [
+                    _connected_condition("Cover"),
                     {
-                        "id": "position_above",
+                        "id": "position",
                         "label": "Cover position",
                         "type": "number",
                         "params": [
@@ -455,7 +524,27 @@ def build_behaviors() -> dict[str, Any]:
                             "field": "position_percent",
                             "operator": ">",
                         },
-                    }
+                    },
+                    {
+                        "id": "motion_state",
+                        "label": "Cover motion state",
+                        "type": "text",
+                        "params": [
+                            {
+                                "name": "motion_state",
+                                "label": "Motion state",
+                                "type": "text",
+                                "required": True,
+                            }
+                        ],
+                        "capability": "sensor.motion_state",
+                        "operators": ["eq", "neq"],
+                        "runtime": {
+                            "source": "state",
+                            "field": "motion_state",
+                            "operator": "eq",
+                        },
+                    },
                 ],
                 "actions": [
                     {"id": "open_cover", "label": "Open", "command": "open_cover"},
@@ -466,6 +555,7 @@ def build_behaviors() -> dict[str, Any]:
                         "label": "Set position",
                         "command": "set_cover_position",
                     },
+                    {"id": "refresh", "label": "Refresh", "command": "refresh"},
                 ],
             },
             {
@@ -488,8 +578,10 @@ def build_behaviors() -> dict[str, Any]:
                     "set_dp",
                 ],
                 "conditions": [
+                    _connected_condition("Climate device"),
+                    _power_state_condition("Climate"),
                     {
-                        "id": "current_temp_above",
+                        "id": "current_temperature",
                         "label": "Current temperature",
                         "type": "number",
                         "params": [
@@ -506,6 +598,27 @@ def build_behaviors() -> dict[str, Any]:
                         "runtime": {
                             "source": "state",
                             "field": "temperature_c",
+                            "operator": ">",
+                        },
+                    },
+                    {
+                        "id": "target_temperature",
+                        "label": "Target temperature",
+                        "type": "number",
+                        "params": [
+                            {
+                                "name": "target_temperature_c",
+                                "label": "Target temperature °C",
+                                "type": "number",
+                                "required": True,
+                                "unit": "C",
+                            }
+                        ],
+                        "capability": "sensor.target_temperature_c",
+                        "operators": [">", ">=", "<", "<=", "eq"],
+                        "runtime": {
+                            "source": "state",
+                            "field": "target_temperature_c",
                             "operator": ">",
                         },
                     },
@@ -566,8 +679,10 @@ def build_behaviors() -> dict[str, Any]:
                     "set_dp",
                 ],
                 "conditions": [
+                    _connected_condition("Humidifier"),
+                    _power_state_condition("Humidifier"),
                     {
-                        "id": "current_humidity_above",
+                        "id": "current_humidity",
                         "label": "Current humidity",
                         "type": "number",
                         "params": [
@@ -584,6 +699,27 @@ def build_behaviors() -> dict[str, Any]:
                         "runtime": {
                             "source": "state",
                             "field": "humidity_percent",
+                            "operator": ">",
+                        },
+                    },
+                    {
+                        "id": "target_humidity",
+                        "label": "Target humidity",
+                        "type": "number",
+                        "params": [
+                            {
+                                "name": "target_humidity_percent",
+                                "label": "Target humidity %",
+                                "type": "number",
+                                "required": True,
+                                "unit": "%",
+                            }
+                        ],
+                        "capability": "sensor.target_humidity_percent",
+                        "operators": [">", ">=", "<", "<=", "eq"],
+                        "runtime": {
+                            "source": "state",
+                            "field": "target_humidity_percent",
                             "operator": ">",
                         },
                     },
@@ -644,8 +780,31 @@ def build_behaviors() -> dict[str, Any]:
                     "set_dp",
                 ],
                 "conditions": [
+                    _connected_condition("Air purifier"),
+                    _power_state_condition("Air purifier"),
                     {
-                        "id": "air_quality_above",
+                        "id": "fan_speed",
+                        "label": "Purifier fan speed",
+                        "type": "number",
+                        "params": [
+                            {
+                                "name": "percent",
+                                "label": "Speed %",
+                                "type": "number",
+                                "required": True,
+                                "unit": "%",
+                            }
+                        ],
+                        "capability": "sensor.fan_speed_percent",
+                        "operators": [">", ">=", "<", "<=", "eq"],
+                        "runtime": {
+                            "source": "state",
+                            "field": "fan_speed_percent",
+                            "operator": ">",
+                        },
+                    },
+                    {
+                        "id": "air_quality",
                         "label": "Air quality index",
                         "type": "number",
                         "params": [

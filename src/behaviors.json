@@ -34,7 +34,22 @@
           }
         },
         {
-          "id": "power_above",
+          "id": "power_state",
+          "label": "Plug power state",
+          "type": "boolean",
+          "capability": "sensor.power",
+          "operators": [
+            "eq",
+            "neq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "power",
+            "operator": "eq"
+          }
+        },
+        {
+          "id": "power_draw",
           "label": "Power draw",
           "type": "number",
           "params": [
@@ -65,17 +80,32 @@
         {
           "id": "turn_on",
           "label": "Turn on",
-          "command": "turn_on"
+          "runtime": {
+            "command": "turn_on"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "turn_off",
           "label": "Turn off",
-          "command": "turn_off"
+          "runtime": {
+            "command": "turn_off"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "refresh",
           "label": "Refresh",
-          "command": "refresh"
+          "runtime": {
+            "command": "refresh"
+          },
+          "safety": {
+            "riskLevel": "low"
+          }
         }
       ]
     },
@@ -102,7 +132,37 @@
       ],
       "conditions": [
         {
-          "id": "brightness_above",
+          "id": "connected",
+          "label": "Light is connected",
+          "type": "boolean",
+          "capability": "sensor.connected",
+          "operators": [
+            "eq",
+            "neq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "connected",
+            "operator": "eq"
+          }
+        },
+        {
+          "id": "power_state",
+          "label": "Light power state",
+          "type": "boolean",
+          "capability": "sensor.power",
+          "operators": [
+            "eq",
+            "neq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "power",
+            "operator": "eq"
+          }
+        },
+        {
+          "id": "brightness",
           "label": "Brightness",
           "type": "number",
           "params": [
@@ -156,27 +216,72 @@
         {
           "id": "turn_on",
           "label": "Turn on",
-          "command": "turn_on"
+          "runtime": {
+            "command": "turn_on"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "turn_off",
           "label": "Turn off",
-          "command": "turn_off"
+          "runtime": {
+            "command": "turn_off"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "set_brightness",
           "label": "Set brightness",
-          "command": "set_brightness"
+          "runtime": {
+            "command": "set_brightness"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "set_color_temp",
           "label": "Set color temperature",
-          "command": "set_color_temp"
+          "runtime": {
+            "command": "set_color_temp"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "set_color_rgb",
           "label": "Set RGB color",
-          "command": "set_color_rgb"
+          "runtime": {
+            "command": "set_color_rgb"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
+        },
+        {
+          "id": "set_mode",
+          "label": "Set mode",
+          "runtime": {
+            "command": "set_mode"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
+        },
+        {
+          "id": "refresh",
+          "label": "Refresh",
+          "runtime": {
+            "command": "refresh"
+          },
+          "safety": {
+            "riskLevel": "low"
+          }
         }
       ]
     },
@@ -202,7 +307,37 @@
       ],
       "conditions": [
         {
-          "id": "speed_above",
+          "id": "connected",
+          "label": "Fan is connected",
+          "type": "boolean",
+          "capability": "sensor.connected",
+          "operators": [
+            "eq",
+            "neq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "connected",
+            "operator": "eq"
+          }
+        },
+        {
+          "id": "power_state",
+          "label": "Fan power state",
+          "type": "boolean",
+          "capability": "sensor.power",
+          "operators": [
+            "eq",
+            "neq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "power",
+            "operator": "eq"
+          }
+        },
+        {
+          "id": "fan_speed",
           "label": "Fan speed",
           "type": "number",
           "params": [
@@ -227,28 +362,106 @@
             "field": "fan_speed_percent",
             "operator": ">"
           }
+        },
+        {
+          "id": "oscillating",
+          "label": "Fan is oscillating",
+          "type": "boolean",
+          "capability": "sensor.oscillating",
+          "operators": [
+            "eq",
+            "neq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "oscillating",
+            "operator": "eq"
+          }
+        },
+        {
+          "id": "mode_equals",
+          "label": "Fan mode",
+          "type": "text",
+          "params": [
+            {
+              "name": "mode",
+              "label": "Mode",
+              "type": "text",
+              "required": true
+            }
+          ],
+          "capability": "sensor.mode",
+          "operators": [
+            "eq",
+            "neq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "mode",
+            "operator": "eq"
+          }
         }
       ],
       "actions": [
         {
           "id": "turn_on",
           "label": "Turn on",
-          "command": "turn_on"
+          "runtime": {
+            "command": "turn_on"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "turn_off",
           "label": "Turn off",
-          "command": "turn_off"
+          "runtime": {
+            "command": "turn_off"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "set_fan_speed",
           "label": "Set fan speed",
-          "command": "set_fan_speed"
+          "runtime": {
+            "command": "set_fan_speed"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "set_oscillate",
           "label": "Set oscillation",
-          "command": "set_oscillate"
+          "runtime": {
+            "command": "set_oscillate"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
+        },
+        {
+          "id": "set_mode",
+          "label": "Set mode",
+          "runtime": {
+            "command": "set_mode"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
+        },
+        {
+          "id": "refresh",
+          "label": "Refresh",
+          "runtime": {
+            "command": "refresh"
+          },
+          "safety": {
+            "riskLevel": "low"
+          }
         }
       ]
     },
@@ -271,7 +484,22 @@
       ],
       "conditions": [
         {
-          "id": "position_above",
+          "id": "connected",
+          "label": "Cover is connected",
+          "type": "boolean",
+          "capability": "sensor.connected",
+          "operators": [
+            "eq",
+            "neq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "connected",
+            "operator": "eq"
+          }
+        },
+        {
+          "id": "position",
           "label": "Cover position",
           "type": "number",
           "params": [
@@ -296,28 +524,81 @@
             "field": "position_percent",
             "operator": ">"
           }
+        },
+        {
+          "id": "motion_state",
+          "label": "Cover motion state",
+          "type": "text",
+          "params": [
+            {
+              "name": "motion_state",
+              "label": "Motion state",
+              "type": "text",
+              "required": true
+            }
+          ],
+          "capability": "sensor.motion_state",
+          "operators": [
+            "eq",
+            "neq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "motion_state",
+            "operator": "eq"
+          }
         }
       ],
       "actions": [
         {
           "id": "open_cover",
           "label": "Open",
-          "command": "open_cover"
+          "runtime": {
+            "command": "open_cover"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "close_cover",
           "label": "Close",
-          "command": "close_cover"
+          "runtime": {
+            "command": "close_cover"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "stop_cover",
           "label": "Stop",
-          "command": "stop_cover"
+          "runtime": {
+            "command": "stop_cover"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "set_cover_position",
           "label": "Set position",
-          "command": "set_cover_position"
+          "runtime": {
+            "command": "set_cover_position"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
+        },
+        {
+          "id": "refresh",
+          "label": "Refresh",
+          "runtime": {
+            "command": "refresh"
+          },
+          "safety": {
+            "riskLevel": "low"
+          }
         }
       ]
     },
@@ -342,7 +623,37 @@
       ],
       "conditions": [
         {
-          "id": "current_temp_above",
+          "id": "connected",
+          "label": "Climate device is connected",
+          "type": "boolean",
+          "capability": "sensor.connected",
+          "operators": [
+            "eq",
+            "neq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "connected",
+            "operator": "eq"
+          }
+        },
+        {
+          "id": "power_state",
+          "label": "Climate power state",
+          "type": "boolean",
+          "capability": "sensor.power",
+          "operators": [
+            "eq",
+            "neq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "power",
+            "operator": "eq"
+          }
+        },
+        {
+          "id": "current_temperature",
           "label": "Current temperature",
           "type": "number",
           "params": [
@@ -365,6 +676,33 @@
           "runtime": {
             "source": "state",
             "field": "temperature_c",
+            "operator": ">"
+          }
+        },
+        {
+          "id": "target_temperature",
+          "label": "Target temperature",
+          "type": "number",
+          "params": [
+            {
+              "name": "target_temperature_c",
+              "label": "Target temperature \u00b0C",
+              "type": "number",
+              "required": true,
+              "unit": "C"
+            }
+          ],
+          "capability": "sensor.target_temperature_c",
+          "operators": [
+            ">",
+            ">=",
+            "<",
+            "<=",
+            "eq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "target_temperature_c",
             "operator": ">"
           }
         },
@@ -396,27 +734,52 @@
         {
           "id": "turn_on",
           "label": "Turn on",
-          "command": "turn_on"
+          "runtime": {
+            "command": "turn_on"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "turn_off",
           "label": "Turn off",
-          "command": "turn_off"
+          "runtime": {
+            "command": "turn_off"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "set_temperature",
           "label": "Set temperature",
-          "command": "set_temperature"
+          "runtime": {
+            "command": "set_temperature"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "set_mode",
           "label": "Set mode",
-          "command": "set_mode"
+          "runtime": {
+            "command": "set_mode"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "refresh",
           "label": "Refresh",
-          "command": "refresh"
+          "runtime": {
+            "command": "refresh"
+          },
+          "safety": {
+            "riskLevel": "low"
+          }
         }
       ]
     },
@@ -441,7 +804,37 @@
       ],
       "conditions": [
         {
-          "id": "current_humidity_above",
+          "id": "connected",
+          "label": "Humidifier is connected",
+          "type": "boolean",
+          "capability": "sensor.connected",
+          "operators": [
+            "eq",
+            "neq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "connected",
+            "operator": "eq"
+          }
+        },
+        {
+          "id": "power_state",
+          "label": "Humidifier power state",
+          "type": "boolean",
+          "capability": "sensor.power",
+          "operators": [
+            "eq",
+            "neq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "power",
+            "operator": "eq"
+          }
+        },
+        {
+          "id": "current_humidity",
           "label": "Current humidity",
           "type": "number",
           "params": [
@@ -464,6 +857,33 @@
           "runtime": {
             "source": "state",
             "field": "humidity_percent",
+            "operator": ">"
+          }
+        },
+        {
+          "id": "target_humidity",
+          "label": "Target humidity",
+          "type": "number",
+          "params": [
+            {
+              "name": "target_humidity_percent",
+              "label": "Target humidity %",
+              "type": "number",
+              "required": true,
+              "unit": "%"
+            }
+          ],
+          "capability": "sensor.target_humidity_percent",
+          "operators": [
+            ">",
+            ">=",
+            "<",
+            "<=",
+            "eq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "target_humidity_percent",
             "operator": ">"
           }
         },
@@ -495,27 +915,52 @@
         {
           "id": "turn_on",
           "label": "Turn on",
-          "command": "turn_on"
+          "runtime": {
+            "command": "turn_on"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "turn_off",
           "label": "Turn off",
-          "command": "turn_off"
+          "runtime": {
+            "command": "turn_off"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "set_humidity",
           "label": "Set humidity",
-          "command": "set_humidity"
+          "runtime": {
+            "command": "set_humidity"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "set_mode",
           "label": "Set mode",
-          "command": "set_mode"
+          "runtime": {
+            "command": "set_mode"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "refresh",
           "label": "Refresh",
-          "command": "refresh"
+          "runtime": {
+            "command": "refresh"
+          },
+          "safety": {
+            "riskLevel": "low"
+          }
         }
       ]
     },
@@ -540,7 +985,64 @@
       ],
       "conditions": [
         {
-          "id": "air_quality_above",
+          "id": "connected",
+          "label": "Air purifier is connected",
+          "type": "boolean",
+          "capability": "sensor.connected",
+          "operators": [
+            "eq",
+            "neq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "connected",
+            "operator": "eq"
+          }
+        },
+        {
+          "id": "power_state",
+          "label": "Air purifier power state",
+          "type": "boolean",
+          "capability": "sensor.power",
+          "operators": [
+            "eq",
+            "neq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "power",
+            "operator": "eq"
+          }
+        },
+        {
+          "id": "fan_speed",
+          "label": "Purifier fan speed",
+          "type": "number",
+          "params": [
+            {
+              "name": "percent",
+              "label": "Speed %",
+              "type": "number",
+              "required": true,
+              "unit": "%"
+            }
+          ],
+          "capability": "sensor.fan_speed_percent",
+          "operators": [
+            ">",
+            ">=",
+            "<",
+            "<=",
+            "eq"
+          ],
+          "runtime": {
+            "source": "state",
+            "field": "fan_speed_percent",
+            "operator": ">"
+          }
+        },
+        {
+          "id": "air_quality",
           "label": "Air quality index",
           "type": "number",
           "params": [
@@ -594,29 +1096,135 @@
         {
           "id": "turn_on",
           "label": "Turn on",
-          "command": "turn_on"
+          "runtime": {
+            "command": "turn_on"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "turn_off",
           "label": "Turn off",
-          "command": "turn_off"
+          "runtime": {
+            "command": "turn_off"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "set_fan_speed",
           "label": "Set speed",
-          "command": "set_fan_speed"
+          "runtime": {
+            "command": "set_fan_speed"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "set_mode",
           "label": "Set mode",
-          "command": "set_mode"
+          "runtime": {
+            "command": "set_mode"
+          },
+          "safety": {
+            "riskLevel": "medium"
+          }
         },
         {
           "id": "refresh",
           "label": "Refresh",
-          "command": "refresh"
+          "runtime": {
+            "command": "refresh"
+          },
+          "safety": {
+            "riskLevel": "low"
+          }
         }
       ]
     }
-  ]
+  ],
+  "telemetry": {
+    "capabilityMappings": [
+      {
+        "nativeMetric": "air_quality_index",
+        "capability": "sensor.air_quality_index"
+      },
+      {
+        "nativeMetric": "brightness_percent",
+        "capability": "sensor.brightness_percent"
+      },
+      {
+        "nativeMetric": "color_temp_percent",
+        "capability": "sensor.color_temp_percent"
+      },
+      {
+        "nativeMetric": "color_value",
+        "capability": "sensor.color_value"
+      },
+      {
+        "nativeMetric": "connected",
+        "capability": "sensor.connected"
+      },
+      {
+        "nativeMetric": "current_ma",
+        "capability": "sensor.current_ma"
+      },
+      {
+        "nativeMetric": "fan_speed_percent",
+        "capability": "sensor.fan_speed_percent"
+      },
+      {
+        "nativeMetric": "humidity_percent",
+        "capability": "sensor.humidity_percent"
+      },
+      {
+        "nativeMetric": "mode",
+        "capability": "sensor.mode"
+      },
+      {
+        "nativeMetric": "motion_state",
+        "capability": "sensor.motion_state"
+      },
+      {
+        "nativeMetric": "oscillating",
+        "capability": "sensor.oscillating"
+      },
+      {
+        "nativeMetric": "position_percent",
+        "capability": "sensor.position_percent"
+      },
+      {
+        "nativeMetric": "power",
+        "capability": "sensor.power"
+      },
+      {
+        "nativeMetric": "power_w",
+        "capability": "sensor.power_w"
+      },
+      {
+        "nativeMetric": "set_dp",
+        "capability": "sensor.set_dp"
+      },
+      {
+        "nativeMetric": "target_humidity_percent",
+        "capability": "sensor.target_humidity_percent"
+      },
+      {
+        "nativeMetric": "target_temperature_c",
+        "capability": "sensor.target_temperature_c"
+      },
+      {
+        "nativeMetric": "temperature_c",
+        "capability": "sensor.temperature_c"
+      },
+      {
+        "nativeMetric": "voltage_v",
+        "capability": "sensor.voltage_v"
+      }
+    ]
+  },
+  "behaviorSchemaVersion": "integration.behaviors.v2"
 }
