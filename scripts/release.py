@@ -191,13 +191,15 @@ def main() -> None:
         label="settings version",
     )
     manifest["version"] = next_version_str
-    manifest["image"] = f"docker.io/piphi/piphi-network-tuya:{next_version_str}"
+    manifest["image"] = f"docker.io/piphinetwork/piphi-network-tuya:{next_version_str}"
     runtime_linux = manifest.get("runtime", {}).get("linux", {})
     container = (
         runtime_linux.get("container", {}) if isinstance(runtime_linux, dict) else {}
     )
     if isinstance(container, dict):
-        container["image"] = f"docker.io/piphi/piphi-network-tuya:{next_version_str}"
+        container["image"] = (
+            f"docker.io/piphinetwork/piphi-network-tuya:{next_version_str}"
+        )
 
     PYPROJECT_PATH.write_text(pyproject_text, encoding="utf-8")
     SETTINGS_PATH.write_text(settings_text, encoding="utf-8")

@@ -107,6 +107,25 @@
             "riskLevel": "low"
           }
         }
+      ],
+      "triggers": [
+        {
+          "id": "state_changed",
+          "label": "Device state changes",
+          "description": "Start when Core records a changed Tuya device capability.",
+          "capability": "telemetry.state",
+          "runtime": {
+            "event": "device.state_changed",
+            "source": "integration"
+          },
+          "freshness": {
+            "maxAgeSeconds": 180,
+            "staleDataMode": "block"
+          },
+          "ui": {
+            "group": "when"
+          }
+        }
       ]
     },
     {
@@ -281,6 +300,25 @@
           },
           "safety": {
             "riskLevel": "low"
+          }
+        }
+      ],
+      "triggers": [
+        {
+          "id": "state_changed",
+          "label": "Device state changes",
+          "description": "Start when Core records a changed Tuya device capability.",
+          "capability": "telemetry.state",
+          "runtime": {
+            "event": "device.state_changed",
+            "source": "integration"
+          },
+          "freshness": {
+            "maxAgeSeconds": 180,
+            "staleDataMode": "block"
+          },
+          "ui": {
+            "group": "when"
           }
         }
       ]
@@ -463,6 +501,25 @@
             "riskLevel": "low"
           }
         }
+      ],
+      "triggers": [
+        {
+          "id": "state_changed",
+          "label": "Device state changes",
+          "description": "Start when Core records a changed Tuya device capability.",
+          "capability": "telemetry.state",
+          "runtime": {
+            "event": "device.state_changed",
+            "source": "integration"
+          },
+          "freshness": {
+            "maxAgeSeconds": 180,
+            "staleDataMode": "block"
+          },
+          "ui": {
+            "group": "when"
+          }
+        }
       ]
     },
     {
@@ -600,6 +657,25 @@
             "riskLevel": "low"
           }
         }
+      ],
+      "triggers": [
+        {
+          "id": "state_changed",
+          "label": "Device state changes",
+          "description": "Start when Core records a changed Tuya device capability.",
+          "capability": "telemetry.state",
+          "runtime": {
+            "event": "device.state_changed",
+            "source": "integration"
+          },
+          "freshness": {
+            "maxAgeSeconds": 180,
+            "staleDataMode": "block"
+          },
+          "ui": {
+            "group": "when"
+          }
+        }
       ]
     },
     {
@@ -659,7 +735,7 @@
           "params": [
             {
               "name": "temperature_c",
-              "label": "Temperature \u00b0C",
+              "label": "Temperature °C",
               "type": "number",
               "required": true,
               "unit": "C"
@@ -686,7 +762,7 @@
           "params": [
             {
               "name": "target_temperature_c",
-              "label": "Target temperature \u00b0C",
+              "label": "Target temperature °C",
               "type": "number",
               "required": true,
               "unit": "C"
@@ -779,6 +855,25 @@
           },
           "safety": {
             "riskLevel": "low"
+          }
+        }
+      ],
+      "triggers": [
+        {
+          "id": "state_changed",
+          "label": "Device state changes",
+          "description": "Start when Core records a changed Tuya device capability.",
+          "capability": "telemetry.state",
+          "runtime": {
+            "event": "device.state_changed",
+            "source": "integration"
+          },
+          "freshness": {
+            "maxAgeSeconds": 180,
+            "staleDataMode": "block"
+          },
+          "ui": {
+            "group": "when"
           }
         }
       ]
@@ -962,6 +1057,25 @@
             "riskLevel": "low"
           }
         }
+      ],
+      "triggers": [
+        {
+          "id": "state_changed",
+          "label": "Device state changes",
+          "description": "Start when Core records a changed Tuya device capability.",
+          "capability": "telemetry.state",
+          "runtime": {
+            "event": "device.state_changed",
+            "source": "integration"
+          },
+          "freshness": {
+            "maxAgeSeconds": 180,
+            "staleDataMode": "block"
+          },
+          "ui": {
+            "group": "when"
+          }
+        }
       ]
     },
     {
@@ -1143,6 +1257,25 @@
             "riskLevel": "low"
           }
         }
+      ],
+      "triggers": [
+        {
+          "id": "state_changed",
+          "label": "Device state changes",
+          "description": "Start when Core records a changed Tuya device capability.",
+          "capability": "telemetry.state",
+          "runtime": {
+            "event": "device.state_changed",
+            "source": "integration"
+          },
+          "freshness": {
+            "maxAgeSeconds": 180,
+            "staleDataMode": "block"
+          },
+          "ui": {
+            "group": "when"
+          }
+        }
       ]
     }
   ],
@@ -1226,5 +1359,124 @@
       }
     ]
   },
-  "behaviorSchemaVersion": "integration.behaviors.v2"
+  "behaviorSchemaVersion": "integration.behaviors.v2",
+  "templates": [
+    {
+      "id": "tuya_high_power_cutoff",
+      "label": "Turn off a high-draw Tuya plug",
+      "description": "Turn off a selected Tuya plug when power draw exceeds 1,500 W, with a five-minute cooldown.",
+      "category": "Energy safety",
+      "deviceKey": "tuya_plug",
+      "config": {
+        "automation_schema_version": "automation.behavior.v2",
+        "triggers": [
+          {
+            "id": "state_changed",
+            "label": "Tuya plug state changes",
+            "type": "integration_event",
+            "event": "device.state_changed",
+            "capability": "telemetry.state",
+            "enabled": true,
+            "sourceRef": {
+              "integrationId": "{{integrationId}}",
+              "integrationKey": "{{integrationKey}}",
+              "configId": "{{configId}}",
+              "behaviorDeviceKey": "tuya_plug",
+              "optionKey": "state_changed",
+              "capability": "telemetry.state"
+            }
+          }
+        ],
+        "trigger": {
+          "id": "state_changed",
+          "label": "Tuya plug state changes",
+          "type": "integration_event",
+          "event": "device.state_changed",
+          "capability": "telemetry.state",
+          "enabled": true
+        },
+        "intent": "energy_safety",
+        "conditionTree": {
+          "id": "tuya_high_power_cutoff_condition",
+          "label": "Power draw is above 1,500 W",
+          "field": "power_w",
+          "operator": ">",
+          "value": 1500,
+          "sourceRef": {
+            "integrationId": "{{integrationId}}",
+            "integrationKey": "{{integrationKey}}",
+            "configId": "{{configId}}",
+            "behaviorDeviceKey": "tuya_plug",
+            "optionKey": "power_draw",
+            "capability": "sensor.power_w"
+          }
+        },
+        "actions": [
+          {
+            "id": "tuya_high_power_cutoff_action",
+            "label": "Turn off Tuya plug",
+            "action": "turn_off",
+            "capability": "switch.turn_off",
+            "sourceRef": {
+              "integrationId": "{{integrationId}}",
+              "integrationKey": "{{integrationKey}}",
+              "configId": "{{configId}}",
+              "behaviorDeviceKey": "tuya_plug",
+              "optionKey": "turn_off",
+              "capability": "switch.turn_off"
+            },
+            "target": {
+              "mode": "selection",
+              "configIds": [
+                "{{configId}}"
+              ]
+            }
+          }
+        ],
+        "safety": {
+          "staleDataMode": "block",
+          "maxAgeSeconds": 300,
+          "requireFreshTrigger": true,
+          "dryRunFirst": true
+        },
+        "failure": {
+          "strategy": "follow_edges",
+          "fallbackBehaviorId": "",
+          "conditionTree": {
+            "op": "and",
+            "children": []
+          }
+        },
+        "stop": {
+          "never": true
+        },
+        "override": {
+          "mode": "continue"
+        },
+        "execution": {
+          "failureStrategy": "follow_edges",
+          "fallbackBehaviorId": "",
+          "dispatchMode": "runtime"
+        },
+        "policies": {
+          "execution": {
+            "failureStrategy": "follow_edges",
+            "fallbackBehaviorId": "",
+            "dispatchMode": "runtime"
+          },
+          "freshness": {
+            "staleDataMode": "block"
+          },
+          "manualOverride": {
+            "mode": "continue"
+          },
+          "cooldownSeconds": 300
+        }
+      },
+      "metadata": {
+        "recommended": true,
+        "requiresReview": true
+      }
+    }
+  ]
 }

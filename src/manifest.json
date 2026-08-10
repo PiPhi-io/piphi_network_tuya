@@ -16,7 +16,7 @@
     "website": "https://github.com/PiPhi-io"
   },
   "license": "MIT",
-  "image": "docker.io/piphi/piphi-network-tuya:0.1.0",
+  "image": "docker.io/piphinetwork/piphi-network-tuya:0.1.0",
   "platforms": [
     "linux"
   ],
@@ -24,7 +24,7 @@
     "linux": {
       "type": "container",
       "container": {
-        "image": "docker.io/piphi/piphi-network-tuya:0.1.0",
+        "image": "docker.io/piphinetwork/piphi-network-tuya:0.1.0",
         "ports": [
           {
             "container": 4191,
