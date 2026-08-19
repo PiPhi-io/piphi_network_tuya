@@ -1486,6 +1486,53 @@ def test_command_turn_on_returns_refreshed_state(monkeypatch) -> None:
     assert body["state"]["power"] is True
 
 
+def test_command_replays_idempotency_key_without_repeating_device_effect(
+    monkeypatch,
+) -> None:
+    reset_runtime_state()
+    calls = 0
+
+    async def fake_execute_command_for_entry(entry, command_name, args=None):
+        nonlocal calls
+        calls += 1
+        return {
+            "result": {"success": True, "command": command_name},
+            "state": {
+                "connected": True,
+                "power": True,
+                "config_id": entry["config_id"],
+            },
+        }
+
+    command_module = importlib.import_module("piphi_network_tuya.routes.commands")
+    monkeypatch.setattr(
+        command_module, "execute_command_for_entry", fake_execute_command_for_entry
+    )
+    registry.set(
+        "tuya-idempotency-1",
+        {
+            "config_id": "tuya-idempotency-1",
+            "device_id": "tuya-idempotency-1",
+        },
+    )
+    headers = {"X-PiPhi-Idempotency-Key": "tuya-action-idempotency-1"}
+    payload = {
+        "command": "turn_on",
+        "config_id": "tuya-idempotency-1",
+        "device_id": "tuya-idempotency-1",
+    }
+
+    with TestClient(app) as client:
+        first = client.post("/command", json=payload, headers=headers)
+        replay = client.post("/command", json=payload, headers=headers)
+
+    assert first.status_code == 200
+    assert replay.status_code == 200
+    assert first.json()["replayed"] is False
+    assert replay.json()["replayed"] is True
+    assert calls == 1
+
+
 def test_config_sync_replaces_tuya_device_and_uses_testkit_snapshot(
     mock_core, monkeypatch
 ) -> None:
