@@ -1,6 +1,6 @@
 [project]
 name = "piphi_network_tuya"
-version = "0.1.1"
+version = "0.1.2"
 description = "PiPhi Tuya integration runtime built with piphi-runtime-kit-python."
 authors = [
   { name = "KelvinSan", email = "support@piphi.network" },
