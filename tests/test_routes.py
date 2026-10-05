@@ -18,6 +18,7 @@ from piphi_runtime_testkit_python import (
 )
 
 from piphi_network_tuya.main import app
+from piphi_network_tuya.settings import INTEGRATION_VERSION
 from piphi_network_tuya.state import (
     close_device_session,
     device_sessions,
@@ -388,6 +389,11 @@ def test_manifest_route_reports_tinytuya_and_manifest_endpoint() -> None:
     body = response.json()
     assert response.status_code == 200
     assert body["id"] == "piphi-network-tuya"
+    assert body["version"] == INTEGRATION_VERSION
+    assert body["image"] == (
+        f"docker.io/piphinetwork/piphi-network-tuya:{INTEGRATION_VERSION}"
+    )
+    assert body["runtime"]["linux"]["container"]["image"] == body["image"]
     assert body["metadata"]["vendor_library"] == "tinytuya"
     assert body["api"]["endpoints"]["manifest"] == "/manifest.json"
     assert body["api"]["endpoints"]["behaviors"] == "/behaviors.json"

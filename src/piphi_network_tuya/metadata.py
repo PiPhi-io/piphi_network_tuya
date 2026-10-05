@@ -74,13 +74,13 @@ def build_manifest() -> dict[str, Any]:
             "website": "https://github.com/PiPhi-io",
         },
         "license": "MIT",
-        "image": f"docker.io/piphi/{INTEGRATION_ID}:{INTEGRATION_VERSION}",
+        "image": f"docker.io/piphinetwork/piphi-network-tuya:{INTEGRATION_VERSION}",
         "platforms": ["linux"],
         "runtime": {
             "linux": {
                 "type": "container",
                 "container": {
-                    "image": f"docker.io/piphi/{INTEGRATION_ID}:{INTEGRATION_VERSION}",
+                    "image": f"docker.io/piphinetwork/piphi-network-tuya:{INTEGRATION_VERSION}",
                     "ports": [
                         {
                             "container": DEFAULT_RUNTIME_PORT,

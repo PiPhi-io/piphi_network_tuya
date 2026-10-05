@@ -20,7 +20,7 @@ def test_native_widgets_match_integration_contract() -> None:
             "auto_install": True,
         }
     ]
-    assert package["sdk_version_range"] == ">=0.5.1,<0.6"
+    assert package["sdk_version_range"] == ">=0.6.1,<0.7"
     widgets = package["widgets"]
     assert len(widgets) == 7
     assert len({widget["id"] for widget in widgets}) == len(widgets)
