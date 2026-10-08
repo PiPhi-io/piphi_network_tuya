@@ -4,7 +4,7 @@ import os
 
 INTEGRATION_ID = "piphi-network-tuya"
 INTEGRATION_NAME = "PiPhi Network Tuya"
-INTEGRATION_VERSION = "0.1.0"
+INTEGRATION_VERSION = "0.1.1"
 PROJECT_KIND = "runtime-integration"
 PROJECT_PRESET = "local-device-runtime"
 PROJECT_DOMAIN = "lan"

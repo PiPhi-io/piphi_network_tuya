@@ -3,7 +3,7 @@
   "manifest_version": "1.0",
   "id": "piphi-network-tuya",
   "name": "PiPhi Network Tuya",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "PiPhi integration runtime for Tuya LAN devices using TinyTuya.",
   "metadata": {
     "generator": "zed-agent",
