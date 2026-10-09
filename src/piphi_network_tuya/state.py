@@ -581,3 +581,4 @@ __all__ = [
     "stop_poll_task",
     "telemetry",
 ]
+starter.state.provide(refresh_all_entries, source=INTEGRATION_ID)

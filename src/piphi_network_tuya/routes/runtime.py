@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException, Query
 
 from ..contract import ENDPOINTS, REQUIRED_ENDPOINTS
 from ..metadata import build_behaviors, build_manifest
@@ -16,7 +16,7 @@ from ..settings import (
     PROJECT_KIND,
     PROJECT_PRESET,
 )
-from ..state import device_sessions, poll_tasks, registry, sanitize_entry
+from ..state import device_sessions, poll_tasks, registry, sanitize_entry, starter
 
 router = APIRouter(tags=["runtime"])
 _MANIFEST_PATH = Path(__file__).resolve().parents[2] / "manifest.json"
@@ -44,8 +44,18 @@ async def behaviors_static() -> dict[str, Any]:
 
 
 @router.get("/state")
-async def state() -> dict[str, Any]:
-    return {
+async def state(
+    refresh: bool = Query(default=False),
+    refresh_request_id: str | None = Query(default=None),
+) -> dict[str, Any]:
+    try:
+        state_payload = await starter.state.response(
+            refresh=refresh,
+            refresh_request_id=refresh_request_id,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    payload = {
         "summary": {
             "active_config_count": len(registry.ids()),
             "recent_event_count": len(registry.recent_events),
@@ -58,6 +68,9 @@ async def state() -> dict[str, Any]:
         },
         "state_snapshots": registry.state_snapshots,
     }
+    if "refresh" in state_payload:
+        payload["refresh"] = state_payload["refresh"]
+    return payload
 
 
 @router.get("/contract")
