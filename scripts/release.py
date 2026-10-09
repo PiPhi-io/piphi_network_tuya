@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PYPROJECT_PATH = ROOT / "pyproject.toml"
 SETTINGS_PATH = ROOT / "src" / "piphi_network_tuya" / "settings.py"
 MANIFEST_PATH = ROOT / "src" / "manifest.json"
+EXPERIENCE_PATH = ROOT / "experiences" / "devices" / "package.source.json"
 
 PYPROJECT_VERSION_RE = re.compile(r'(?m)^(version\s*=\s*")([^"]+)(")$')
 SETTINGS_VERSION_RE = re.compile(r'(?m)^(INTEGRATION_VERSION\s*=\s*")([^"]+)(")$')
@@ -161,6 +162,7 @@ def main() -> None:
     pyproject_text = PYPROJECT_PATH.read_text(encoding="utf-8")
     settings_text = SETTINGS_PATH.read_text(encoding="utf-8")
     manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    experience = json.loads(EXPERIENCE_PATH.read_text(encoding="utf-8"))
 
     current_match = PYPROJECT_VERSION_RE.search(pyproject_text)
     if current_match is None:
@@ -200,10 +202,17 @@ def main() -> None:
         container["image"] = (
             f"docker.io/piphinetwork/piphi-network-tuya:{next_version_str}"
         )
+    identity = experience.get("identity")
+    if not isinstance(identity, dict) or not isinstance(identity.get("version"), str):
+        raise ValueError("Experience package identity.version is missing")
+    identity["version"] = next_version_str
 
     PYPROJECT_PATH.write_text(pyproject_text, encoding="utf-8")
     SETTINGS_PATH.write_text(settings_text, encoding="utf-8")
     MANIFEST_PATH.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    EXPERIENCE_PATH.write_text(
+        json.dumps(experience, indent=2) + "\n", encoding="utf-8"
+    )
 
     print(next_version_str)
 

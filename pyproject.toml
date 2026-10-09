@@ -1,6 +1,6 @@
 [project]
 name = "piphi_network_tuya"
-version = "0.1.1"
+version = "0.1.2"
 description = "PiPhi Tuya integration runtime built with piphi-runtime-kit-python."
 authors = [
   { name = "KelvinSan", email = "support@piphi.network" },
@@ -13,7 +13,7 @@ dependencies = [
   "httpx>=0.27,<1.0",
   "uvicorn[standard]>=0.30,<1.0",
   "tinytuya>=1.16.1,<2.0",
-  "piphi-runtime-kit-python[fastapi]>=0.8.0,<1.0.0",
+  "piphi-runtime-kit-python[fastapi]==0.7.1",
 ]
 
 [project.optional-dependencies]

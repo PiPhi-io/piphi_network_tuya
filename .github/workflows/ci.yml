@@ -26,11 +26,13 @@ jobs:
         working-directory: .
 
       - name: Run tests
-        run: pytest tests/test_routes.py
+        run: pytest
         working-directory: .
 
       - name: Validate checked-in metadata
-        run: python scripts/validate.py
+        run: |
+          python scripts/validate.py
+          python scripts/release.py --bump patch --dry-run
         working-directory: .
 
       - name: Build Docker image
