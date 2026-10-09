@@ -19,7 +19,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
   "pytest>=8.3,<9.0",
-  "piphi-runtime-testkit-python==0.1.3",
+  "piphi-runtime-testkit-python==0.1.4",
 ]
 
 [project.scripts]
