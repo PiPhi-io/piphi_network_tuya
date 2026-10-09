@@ -3,7 +3,7 @@
   "manifest_version": "1.0",
   "id": "piphi-network-tuya",
   "name": "PiPhi Network Tuya",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "PiPhi integration runtime for Tuya LAN devices using TinyTuya.",
   "metadata": {
     "generator": "zed-agent",
@@ -16,7 +16,7 @@
     "website": "https://github.com/PiPhi-io"
   },
   "license": "MIT",
-  "image": "docker.io/piphinetwork/piphi-network-tuya:0.1.2",
+  "image": "docker.io/piphinetwork/piphi-network-tuya:0.1.3",
   "platforms": [
     "linux"
   ],
@@ -24,7 +24,7 @@
     "linux": {
       "type": "container",
       "container": {
-        "image": "docker.io/piphinetwork/piphi-network-tuya:0.1.2",
+        "image": "docker.io/piphinetwork/piphi-network-tuya:0.1.3",
         "ports": [
           {
             "container": 4191,
